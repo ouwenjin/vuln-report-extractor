@@ -146,7 +146,7 @@ python 整理结果/nessus/nessus.py --src nessus/csvs/ --out ../整理结果/ -
 **命令行示例**
 
 ```bash
-python modules/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端口调研表.xlsx
+python 结果整理/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端口调研表.xlsx
 ```
 
 **实现要点 / 建议**
@@ -164,12 +164,12 @@ python modules/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端口调
 **常见用法**
 
 ```bash
-python modules/utils/move.py --src uploads/scan_zips/ --dest modules/ --unpack
+python 结果整理/utils/move.py --src uploads/scan_zips/ --dest 结果整理/ --unpack
 ```
 
 **实现要点 / 建议**
 
-* 解压后识别典型文件名（如 `AwvsReport.xlsx`、`漏洞报告.xlsx`、`*.csv`、`*.xml`），并自动移动到 `modules/awvs/`、`modules/RSAS/`、`modules/nessus/`、`modules/nmap/` 等目录。
+* 解压后识别典型文件名（如 `AwvsReport.xlsx`、`漏洞报告.xlsx`、`*.csv`、`*.xml`），并自动移动到 `结果整理/awvs/`、`结果整理/RSAS/`、`结果整理/nessus/`、`结果整理/nmap/` 等目录。
 * 对文件名出现乱码时可通过 `chardet` 探测原始编码并重命名为 UTF-8 可读名（注意保留原始文件备份以免数据丢失）。
 
 ---
@@ -202,7 +202,7 @@ python modules/utils/move.py --src uploads/scan_zips/ --dest modules/ --unpack
 2. （可选）运行 `move.py` 把压缩包内的扫描器输出分发到对应模块：
 
    ```bash
-   python modules/utils/move.py --src uploads/ --dest modules/ --unpack
+   python 结果整理/utils/move.py --src uploads/ --dest 结果整理/ --unpack
    ```
 3. 逐个运行解析脚本（或使用 `controller.py` 编排执行）：
 
@@ -214,7 +214,7 @@ python modules/utils/move.py --src uploads/scan_zips/ --dest modules/ --unpack
    python 整理结果/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端口调研表.xlsx
 
    # 一键编排（若 controller.py 支持）
-   python controller.py --base-dir modules/ --out ../整理结果/
+   python controller.py --base-dir 结果整理/ --out ../整理结果/
    ```
 4. 在 `整理结果/` 中复核输出文件（特别是 `中高危漏洞.xlsx` ），按需脱敏后上报/归档。
 
@@ -237,7 +237,7 @@ python modules/utils/move.py --src uploads/scan_zips/ --dest modules/ --unpack
    * 对大 CSV 使用 `pandas.read_csv(..., chunksize=...)` 分块处理并增量写入。
 5. **解压后目录出现乱码（例如 `╒√└φ╜ß╣√/`）**
 
-   * 这是编码问题导致的文件名显示异常。建议重命名为 `modules/` 并在脚本中使用相对路径或 CLI 参数避免硬编码目录名。
+   * 这是编码问题导致的文件名显示异常。建议重命名为 `结果整理/` 并在脚本中使用相对路径或 CLI 参数避免硬编码目录名。
 6. **输出为空或少量数据**
 
    * 检查输入文件是否是真实扫描结果（而非空模板），并确认脚本的过滤阈值（例如 `--min-risk`）是否设置过高。
