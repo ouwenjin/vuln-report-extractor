@@ -3,7 +3,7 @@
 
 ## 一、概述
 
-`report-py` 是一套用于解析、标准化和合并多种安全扫描器（RSAS/绿盟、AWVS、Nessus、Nmap 等）输出的 Python 工具集合。目标是把不同来源的扫描结果转换为统一格式的可导出表格（Excel/CSV），并生成便于上报与复核的“中/高危”清单与端口调研表。
+`vuln-report-extractor` 是一套用于解析、标准化和合并多种安全扫描器（RSAS/绿盟、AWVS、Nessus、Nmap 等）输出的 Python 工具集合。目标是把不同来源的扫描结果转换为统一格式的可导出表格（Excel/CSV），并生成便于上报与复核的“中/高危”清单与端口调研表。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
 
@@ -14,7 +14,7 @@
 > 下面为建议的语义化目录结构（把代码模块与整理结果明确区分）。如果你当前仓库里的目录名不同，请按实际文件名替换命令中的路径或在脚本里修改常量。
 
 ```
-report-py/
+vuln-report-extractor/
 ├─ controller.py              # 可选：任务编排器（按顺序运行各模块）
 ├─ 整理结果/                   
 │  ├─ RSAS/
@@ -39,7 +39,7 @@ report-py/
 
 > 下列说明基于仓库中常见脚本。
 
-### 1) `modules/RSAS/rsas.py`
+### 1) `整理结果/RSAS/rsas.py`
 
 **功能**
 解析绿盟（RSAS）导出的 Excel/HTML 报表，标准化列名，抽取每条漏洞记录，导出整理后的报告与中/高危清单。
@@ -56,7 +56,7 @@ report-py/
 **命令行示例**
 
 ```bash
-python modules/RSAS/rsas.py --input combined_reports/漏洞报告.xlsx --output-dir ../整理结果/ --min-risk 中
+python 整理结果/RSAS/rsas.py --input combined_reports/漏洞报告.xlsx --output-dir ../整理结果/ --min-risk 中
 ```
 
 **实现要点 / 建议**
@@ -71,7 +71,7 @@ python modules/RSAS/rsas.py --input combined_reports/漏洞报告.xlsx --output-
 
 ---
 
-### 2) `modules/awvs/awvs.py`
+### 2) `整理结果/awvs/awvs.py`
 
 **功能**
 解析 AWVS 导出的 Excel 或 HTML 报告，合并 web 漏洞记录，筛选并导出 `web漏洞汇总表.xlsx`，可按 IP 汇总。
@@ -87,7 +87,7 @@ python modules/RSAS/rsas.py --input combined_reports/漏洞报告.xlsx --output-
 **命令行示例**
 
 ```bash
-python modules/awvs/awvs.py --input awvs/AwvsReport.xlsx --out ../整理结果/web漏洞汇总表.xlsx
+python 整理结果/awvs/awvs.py --input awvs/AwvsReport.xlsx --out ../整理结果/web漏洞汇总表.xlsx
 ```
 
 **实现要点 / 建议**
@@ -102,7 +102,7 @@ python modules/awvs/awvs.py --input awvs/AwvsReport.xlsx --out ../整理结果/w
 
 ---
 
-### 3) `modules/nessus/nessus.py`
+### 3) `整理结果/nessus/nessus.py`
 
 **功能**
 合并多个 Nessus 导出的 CSV（或转换 `.nessus` XML 的 CSV），做字段标准化与增强（使用映射表），生成带时间戳的总表与中高危清单，并可导出 IP 列表。
@@ -120,7 +120,7 @@ python modules/awvs/awvs.py --input awvs/AwvsReport.xlsx --out ../整理结果/w
 **命令行示例**
 
 ```bash
-python modules/nessus/nessus.py --src nessus/csvs/ --out ../整理结果/ --min-risk Medium
+python 整理结果/nessus/nessus.py --src nessus/csvs/ --out ../整理结果/ --min-risk Medium
 ```
 
 **实现要点 / 建议**
@@ -130,7 +130,7 @@ python modules/nessus/nessus.py --src nessus/csvs/ --out ../整理结果/ --min-
 
 ---
 
-### 4) `modules/nmap/nmap.py`
+### 4) `整理结果/nmap/nmap.py`
 
 **功能**
 解析并合并 Nmap 的 XML 输出（或读取预制的 `开放端口.xlsx`），生成 `端口调研表.xlsx`，支持按端口/服务/协议统计。
@@ -156,7 +156,7 @@ python modules/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端口调
 
 ---
 
-### 5) `modules/utils/move.py`
+### 5) `整理结果/utils/move.py`
 
 **功能**
 辅助脚本：递归解压 ZIP（包括内嵌 ZIP）、自动识别并按规则移动文件到对应模块目录、尝试修复文件名编码问题。
@@ -208,10 +208,10 @@ python modules/utils/move.py --src uploads/scan_zips/ --dest modules/ --unpack
 
    ```bash
    # 单个模块处理（示例）
-   python modules/RSAS/rsas.py --input combined_reports/漏洞报告.xlsx --output-dir ../整理结果/
-   python modules/awvs/awvs.py --input awvs/AwvsReport.xlsx --out ../整理结果/web漏洞汇总表.xlsx
-   python modules/nessus/nessus.py --src nessus/csvs/ --out ../整理结果/
-   python modules/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端口调研表.xlsx
+   python 整理结果/RSAS/rsas.py --input combined_reports/漏洞报告.xlsx --output-dir ../整理结果/
+   python 整理结果/awvs/awvs.py --input awvs/AwvsReport.xlsx --out ../整理结果/web漏洞汇总表.xlsx
+   python 整理结果/nessus/nessus.py --src nessus/csvs/ --out ../整理结果/
+   python 整理结果/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端口调研表.xlsx
 
    # 一键编排（若 controller.py 支持）
    python controller.py --base-dir modules/ --out ../整理结果/
