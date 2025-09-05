@@ -1,13 +1,17 @@
 # vuln-report-extractor — 漏洞报告解析与合并工具集
 
-> **说明**
 
-vuln-report-extractor是一套用于解析、标准化和合并多种安全扫描器（RSAS/绿盟、AWVS、Nessus、Nmap 等）输出的 Python 工具集合。目标是把不同来源的扫描结果转换为统一格式的可导出表格（Excel/CSV），并生成便于上报与复核的“中/高危”清单与端口调研表。
+## 一、概述
+
+`report-py` 是一套用于解析、标准化和合并多种安全扫描器（RSAS/绿盟、AWVS、Nessus、Nmap 等）输出的 Python 工具集合。目标是把不同来源的扫描结果转换为统一格式的可导出表格（Excel/CSV），并生成便于上报与复核的“中/高危”清单与端口调研表。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
+
 ---
 
-## 二、仓库总体结构（基于源码分析后的建议树）
+## 二、仓库总体结构（建议且已修正的清晰版）
+
+> 下面为建议的语义化目录结构（把代码模块与整理结果明确区分）。如果你当前仓库里的目录名不同，请按实际文件名替换命令中的路径或在脚本里修改常量。
 
 ```
 report-py/
@@ -27,44 +31,6 @@ report-py/
 │    
 ├─ README.md (本文件)
 ├─ requirements.txt          
-└─ LICENSE
-```
-
-# report-py — 漏洞报告解析与合并工具集（详尽文档）
-
-> **说明**
-> 本文档包含：仓库结构、每个子目录/脚本的详细功能说明、用法示例、输入/输出规范、错误排查与运行建议。
-> 注：我只修改 README 内容文本，不会在仓库中新增或删除任何文件 —— 所有操作都基于你现有的文件结构与脚本。
-
----
-
-## 一、概述（快速读）
-
-`report-py` 是一套用于解析、标准化和合并多种安全扫描器（RSAS/绿盟、AWVS、Nessus、Nmap 等）输出的 Python 工具集合。目标是把不同来源的扫描结果转换为统一格式的可导出表格（Excel/CSV），并生成便于上报与复核的“中/高危”清单与端口调研表。
-
----
-
-## 二、仓库总体结构（建议且已修正的清晰版）
-
-> 下面为建议的语义化目录结构（把代码模块与整理结果明确区分）。如果你当前仓库里的目录名不同，请按实际文件名替换命令中的路径或在脚本里修改常量。
-
-```
-report-py/
-├─ controller.py               # 可选：任务编排器（按顺序运行各模块）
-├─ modules/                    # 建议：主功能脚本目录（有时解压后会出现乱码名）
-│  ├─ RSAS/
-│  │  └─ rsas.py               # 绿盟/RSAS HTML 或 Excel 报表解析与合并
-│  ├─ awvs/
-│  │  └─ awvs.py               # AWVS 报告（HTML/XLSX）解析、筛选、导出 web 漏洞汇总
-│  ├─ nessus/
-│  │  └─ nessus.py             # Nessus CSV 合并、字段映射、导出中高危
-│  ├─ nmap/
-│  │  └─ nmap.py               # Nmap XML 合并、端口调研表生成
-│  └─ utils/
-│     └─ move.py               # ZIP 解压、文件移动/重命名/编码修正、读取工具
-├─ 整理结果/                    # 建议：脚本输出的统一存放目录（通常加入 .gitignore）
-├─ README.md (本文件)
-├─ requirements.txt            # （可选）依赖清单，若存在请按需安装
 └─ LICENSE
 ```
 ---
