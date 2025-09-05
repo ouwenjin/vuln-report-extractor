@@ -9,8 +9,7 @@
 
 ---
 
-## 二、仓库总体结构（建议且已修正的清晰版）
-
+## 二、仓库总体结构
 > 下面为建议的语义化目录结构（把代码模块与整理结果明确区分）。如果你当前仓库里的目录名不同，请按实际文件名替换命令中的路径或在脚本里修改常量。
 
 nessus缺失示例补充:
@@ -65,7 +64,7 @@ vuln-report-extractor/
 python 整理结果/RSAS/rsas.py --input combined_reports/漏洞报告.xlsx --output-dir ../整理结果/ --min-risk 中
 ```
 
-**实现要点 / 建议**
+**实现要点
 
 * 使用列名候选映射（`COLUMN_CANDIDATES`）兼容不同模板。
 * 风险等级识别应支持中文与英文（`高/中/低`、`Critical/High/Medium`）。
@@ -96,8 +95,7 @@ python 整理结果/RSAS/rsas.py --input combined_reports/漏洞报告.xlsx --ou
 python 整理结果/awvs/awvs.py --input awvs/AwvsReport.xlsx --out ../整理结果/web漏洞汇总表.xlsx
 ```
 
-**实现要点 / 建议**
-
+**实现要点
 * 解析字段：URL、漏洞名称、风险、证据、建议、影响范围、插件ID 等。
 * 对 `Low/Medium/High` 做中文映射为 `低/中/高`。
 * 合并同一 URL 的多条记录时保留最严重的风险等级并合并/去重证据文本。
@@ -129,8 +127,7 @@ python 整理结果/awvs/awvs.py --input awvs/AwvsReport.xlsx --out ../整理结
 python 整理结果/nessus/nessus.py --src nessus/csvs/ --out ../整理结果/ --min-risk Medium
 ```
 
-**实现要点 / 建议**
-
+**实现要点
 * 合并 CSV 时要处理常见编码问题（`utf-8`、`utf-8-sig`、`gbk`），脚本可按序尝试多种编码读取。
 * 若存在 `Nessus中文报告.xlsx` 映射表，可用来补全插件描述、CVE 映射等信息，增强结果可读性。
 
@@ -155,8 +152,7 @@ python 整理结果/nessus/nessus.py --src nessus/csvs/ --out ../整理结果/ -
 python 结果整理/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端口调研表.xlsx
 ```
 
-**实现要点 / 建议**
-
+**实现要点
 * 使用 `lxml` 或 `xml.etree.ElementTree` 解析 XML；`lxml` 更健壮且在复杂 XML 上表现更好。
 * 支持合并同一 IP 多次扫描结果，并统计端口出现频次，便于判断常开端口与临时性开放端口。
 
@@ -173,8 +169,7 @@ python 结果整理/nmap/nmap.py --xml-dir nmap/xmls/ --out ../整理结果/端�
 python 结果整理/utils/move.py --src uploads/scan_zips/ --dest 结果整理/ --unpack
 ```
 
-**实现要点 / 建议**
-
+**实现要点
 * 解压后识别典型文件名（如 `AwvsReport.xlsx`、`漏洞报告.xlsx`、`*.csv`、`*.xml`），并自动移动到 `结果整理/awvs/`、`结果整理/RSAS/`、`结果整理/nessus/`、`结果整理/nmap/` 等目录。
 * 对文件名出现乱码时可通过 `chardet` 探测原始编码并重命名为 UTF-8 可读名（注意保留原始文件备份以免数据丢失）。
 
