@@ -1,26 +1,25 @@
+MIT License
 
-使用方法
-1. 克隆项目
-   git clone https://github.com/zhkali127/vuln-report-extractor.git
-   cd vuln-report-extractor
 
-2. 安装依赖
-   pip install -r requirements.txt
+Copyright (c) 2025 zhkali
 
-3. 将扫描器生成的报告文件放入 `input/` 目录
 
-4. 运行脚本
-   python main.py
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-5. 转换完成后，可以在 `output/` 目录下找到生成的 Excel 文件
 
-目录结构示例
-- input/                存放扫描器报告 (XML/HTML/CSV/JSON)
-- output/               存放最终结果 Excel 文件
-- macros/               存放 Nessus/绿盟 宏文件 (xlsm)
-- scripts/              各类处理脚本
-- main.py               主入口
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-作者信息
-- 作者: zhkali127
-- GitHub: https://github.com/zhkali127
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
