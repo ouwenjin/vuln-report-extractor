@@ -13,6 +13,8 @@
 
 > 下面为建议的语义化目录结构（把代码模块与整理结果明确区分）。如果你当前仓库里的目录名不同，请按实际文件名替换命令中的路径或在脚本里修改常量。
 
+nessus缺失示例补充:https://www.tenablecloud.cn/plugins
+
 ```
 vuln-report-extractor/
 ├─ controller.py              # 可选：任务编排器（按顺序运行各模块）
