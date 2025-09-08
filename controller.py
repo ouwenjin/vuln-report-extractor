@@ -9,13 +9,7 @@ results = []  # 保存每一步执行结果
 def run_command(step, total, description, cmd, input_data=None):
     """运行命令并实时输出日志；自动识别 .py/.exe/.bat 等类型并处理"""
     print(f"\n[步骤 {step}/{total}] {description}")
-
-    # 标准化命令为 list
     cmd_list = cmd if isinstance(cmd, list) else [cmd]
-
-    # 推断实际的目标文件（脚本或可执行）
-    # 情况1: cmd_list[0] 是 python 解释器（sys.executable），则目标通常是 cmd_list[1]
-    # 情况2: 否则目标就是 cmd_list[0]
     if len(cmd_list) >= 2 and os.path.basename(cmd_list[0]).lower() in (
         os.path.basename(sys.executable).lower(), "python", "python.exe"
     ):
@@ -32,38 +26,26 @@ def run_command(step, total, description, cmd, input_data=None):
         results.append((step, description, "❌ 缺少文件"))
         return
 
-    # 根据目标类型决定实际要执行的命令
     lower = target.lower()
     actual_cmd = None
     use_shell = False
 
     if lower.endswith(".py"):
-        # 用 Python 解释器去运行
-        # 保持后续参数（如果有）
         extra_args = cmd_list[2:] if (len(cmd_list) >= 2 and os.path.basename(cmd_list[0]).lower() in (os.path.basename(sys.executable).lower(), "python", "python.exe")) else cmd_list[1:]
         actual_cmd = [sys.executable, target] + extra_args
     elif lower.endswith(".bat"):
-        # .bat 在 Windows 上通常需要 shell=True
-        # 将命令拼成字符串以便 shell 执行
         args = cmd_list[1:] if (len(cmd_list) >= 2 and os.path.basename(cmd_list[0]).lower() in (os.path.basename(sys.executable).lower(), "python", "python.exe")) else cmd_list[1:]
         cmd_str = " ".join([shlex.quote(target)] + [shlex.quote(a) for a in args])
         actual_cmd = cmd_str
         use_shell = True
     else:
-        # 可执行文件 (.exe) 或其他可直接运行的文件
-        # 如果用户传入了 python 前缀（如 [sys.executable, script])，上文已经处理
-        # 这里直接使用原始 cmd_list（可能包含参数）
         actual_cmd = cmd_list
-        # 对于单字符串且包含空格的可执行，shell=False 也行（Popen 接受 list）
         use_shell = False
 
     start_time = time.time()
     try:
-        # rsas2check.exe 特殊处理（保留你原来的逻辑）
         if os.path.basename(target).lower() == "rsas2check.exe":
             os.makedirs(os.path.join(exe_dir, "combined_reports"), exist_ok=True)
-
-        # 启动并流式输出
         if use_shell:
             proc = subprocess.Popen(
                 actual_cmd,
@@ -87,17 +69,13 @@ def run_command(step, total, description, cmd, input_data=None):
                 bufsize=1
             )
 
-        # 如果有输入数据，写入 stdin
         if input_data:
             try:
                 proc.stdin.write(input_data)
                 proc.stdin.flush()
                 proc.stdin.close()
             except Exception:
-                # 有些程序不会读取 stdin，忽略写入错误
                 pass
-
-        # 实时打印子进程输出
         for line in proc.stdout:
             sys.stdout.write(line)
             sys.stdout.flush()
